@@ -16,16 +16,17 @@ Apify.main(async () => {
             const title = $('title').text();
             log.debug(`title ${title}...`);
             const data = [];
-            $('div').each((index, el) => {
-                log.debug(`index ${index}...`);
-                data.push({
-                    title: $(el).find('a').text(),
+            const Branches = [];
+            $('.CobstoreDesc').each((index, el) => {
+                Branches.push({
+                    "Code": $(el).find('span[data-yext-field="address1"]').attr('data-yext-id'),
+                    "Name": $(el).find('h4').text(),
+                    "Url": "https://www.cashwise.com/" + $(el).find('.button').attr('href'),
                 });
             });
+            // await data.push({"Branches": Branches});
             await Apify.pushData({
-                url: request.url,
-                title,
-                data,
+                Branches: Branches
             });
         },
         handleFailedRequestFunction: async ({ request }) => {
